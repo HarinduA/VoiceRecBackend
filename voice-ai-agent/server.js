@@ -11,7 +11,6 @@ app.use(cors());
 let products = [];
 
 function loadCSVData() {
-  products = [];  // clear before loading
   fs.createReadStream('products.csv')
     .pipe(csv())
     .on('data', (row) => {
@@ -40,7 +39,8 @@ app.get('/search', (req, res) => {
     .filter(q => q.length > 0);
 
   const foundItems = queries
-    .flatMap(q => products.filter(p => p.name.includes(q)));
+    .map(q => products.find(p => p.name.includes(q)))
+    .filter(Boolean);
 
   if (foundItems.length > 0) {
     return res.json({ items: foundItems });
