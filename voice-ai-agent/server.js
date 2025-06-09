@@ -2,13 +2,17 @@ const express = require('express');
 const fs = require('fs');
 const csv = require('csv-parser');
 const cors = require('cors');
-const axios = require('axios'); // <-- ADDED
+const axios = require('axios');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-app.use(cors());
-app.use(express.json()); // <-- Needed to parse JSON bodies
+// ✅ Updated CORS setup
+app.use(cors({
+  origin: 'https://voice-rec-app-9a5x.vercel.app'
+}));
+
+app.use(express.json());
 
 let products = [];
 
@@ -52,7 +56,6 @@ app.get('/search', (req, res) => {
   }
 });
 
-// ✅ NEW: Proxy route to VAPI to fix CORS
 app.post('/proxy/vapi', async (req, res) => {
   try {
     const response = await axios.post('https://api.vapi.ai/call/web', req.body, {
