@@ -31,6 +31,7 @@ app.get('/search', (req, res) => {
   const query = req.query.q;
   if (!query) return res.status(400).json({ error: 'Query is required' });
 
+  // Normalize query: replace "and" with comma, split by commas, trim, lowercase
   const queries = query
     .toLowerCase()
     .replace(/ and /g, ',')
@@ -50,5 +51,5 @@ app.get('/search', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
