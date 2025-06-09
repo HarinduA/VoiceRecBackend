@@ -6,11 +6,12 @@ const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-app.use(cors());
+app.use(cors()); // Allow all origins; change if needed
 
 let products = [];
 
 function loadCSVData() {
+  products = [];
   fs.createReadStream('products.csv')
     .pipe(csv())
     .on('data', (row) => {
@@ -25,6 +26,7 @@ function loadCSVData() {
     });
 }
 
+// Load CSV at start
 loadCSVData();
 
 app.get('/search', (req, res) => {
