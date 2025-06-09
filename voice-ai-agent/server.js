@@ -4,7 +4,7 @@ const csv = require('csv-parser');
 const cors = require('cors');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
 app.use(cors());
 
@@ -31,7 +31,6 @@ app.get('/search', (req, res) => {
   const query = req.query.q;
   if (!query) return res.status(400).json({ error: 'Query is required' });
 
-  // Normalize query: replace "and" with comma, split by commas, trim, lowercase
   const queries = query
     .toLowerCase()
     .replace(/ and /g, ',')
